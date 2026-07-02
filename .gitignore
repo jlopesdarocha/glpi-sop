@@ -1,0 +1,12 @@
+Plaintext
+# SEGURANÇA: Ignorar dados ativos do banco, GLPI e senhas
+storage/
+.env
+
+# Ignorar arquivos de log e temporários
+*.log
+.DS_Store
+
+# Ignorar arquivos de backup locais (para não pesar o Git)
+*.sql
+*.tar.gz
