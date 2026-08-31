@@ -1,0 +1,31 @@
+services:
+  db:
+    image: "mysql:8.0"
+    restart: "unless-stopped"
+    volumes:
+      - "./storage/mysql:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: batata
+      MYSQL_DATABASE: glpi
+      MYSQL_USER: glpi
+      MYSQL_PASSWORD: glpi
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u glpi --password=glpi
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    expose:
+      - "3306"
+
+  glpi:
+    image: "glpi/glpi:latest"
+    restart: "unless-stopped"
+    volumes:
+      - "./storage/glpi:/var/glpi:rw"
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "80:80"
